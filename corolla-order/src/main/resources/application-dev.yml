@@ -1,0 +1,25 @@
+server:
+  port: 9404
+
+spring:
+  application:
+    name: corolla-order
+  mvc:
+    throw-exception-if-no-handler-found: true
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.18.128:8848
+
+feign:
+  httpclient:
+    enabled: true
+
+corolla:
+  data-source:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.18.128:3306/corolla?useAffectedRows=true&autoReconnect=true&useUnicode=true&useSSL=false&characterEncoding=utf-8
+    username: root
+    password: root

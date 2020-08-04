@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xujiajun.corolla.score.dal.dao.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.xujiajun.corolla.model.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="account" column="account"/>
+        <result property="score" column="score"/>
+        <result property="deleted" column="is_delete"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        id, `name`, phone, account, score, is_delete, create_time, update_time
+    </sql>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT
+            <include refid="BaseColumnList"/>
+        FROM
+            corolla_user
+        WHERE
+            id = #{id}
+    </select>
+
+    <update id="updateById">
+        UPDATE
+            corolla_user
+        SET
+        <trim suffixOverrides=",">
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="account != null">
+                account = #{account},
+            </if>
+            <if test="score != null">
+                score = #{score},
+            </if>
+            <if test="deleted != null">
+                is_delete = #{deleted},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
+            </if>
+        </trim>
+        WHERE
+            id = #{id}
+    </update>
+</mapper>

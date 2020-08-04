@@ -1,0 +1,31 @@
+# Compiled class file
+*.class
+*.classpath
+
+# Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# IDE Files #
+*.iml
+.idea
+.idea/
+.project
+.settings
+rebel.xml
+.vscode
+target
+.DS_Store
+.factorypath
+node_modules/
+package-lock.json
+dist/
+*-own.yml
+
+# Log file
+logs
+*.log

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xujiajun.corolla.order.dal.dao.OrderGoodsMapper">
+
+    <resultMap id="BaseResultMap" type="com.xujiajun.corolla.model.OrderGoods">
+        <id property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="goodsId" column="goods_id"/>
+        <result property="deleted" column="is_delete"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        id, order_id, goods_id, is_delete, create_time, update_time
+    </sql>
+
+    <insert id="batchInsert">
+        INSERT INTO
+            corolla_order_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            order_id,
+            goods_id,
+            is_delete,
+            create_time,
+            update_time
+        </trim>
+        VALUES
+        <foreach collection="orderGoodsList" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.orderId},
+                #{item.goodsId},
+                #{item.deleted},
+                #{item.createTime},
+                #{item.updateTime}
+            </trim>
+        </foreach>
+    </insert>
+</mapper>

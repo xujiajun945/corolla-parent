@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.xujiajun</groupId>
+	<artifactId>corolla</artifactId>
+
+	<packaging>pom</packaging>
+
+	<version>1.0-SNAPSHOT</version>
+
+	<modules>
+		<module>corolla-base</module>
+		<module>corolla-core</module>
+		<module>corolla-order</module>
+		<module>corolla-score</module>
+	</modules>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<suffix.name>dev</suffix.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>stage</id>
+			<properties>
+				<suffix.name>stage</suffix.name>
+			</properties>
+		</profile>
+		<profile>
+			<id>release</id>
+			<properties>
+				<suffix.name>release</suffix.name>
+			</properties>
+		</profile>
+	</profiles>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
+		<spring-cloud-alibaba.version>2.2.0.RELEASE</spring-cloud-alibaba.version>
+		<mybatis.version>3.5.5</mybatis.version>
+		<mybatis-spring.version>2.0.5</mybatis-spring.version>
+		<mysql-connector.version>8.0.21</mysql-connector.version>
+		<druid.version>1.1.23</druid.version>
+		<rocketmq.version>4.7.1</rocketmq.version>
+
+		<corolla-core.version>1.0-SNAPSHOT</corolla-core.version>
+		<xujiajun-core.version>1.0-SNAPSHOT</xujiajun-core.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Spring Boot Dependencies -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Spring Cloud Dependencies -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Spring Cloud Alibaba -->
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${spring-cloud-alibaba.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- MyBatis -->
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis-spring</artifactId>
+				<version>${mybatis-spring.version}</version>
+			</dependency>
+
+			<!-- MySQL connector -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector.version}</version>
+				<scope>runtime</scope>
+			</dependency>
+
+			<!-- Druid -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${druid.version}</version>
+			</dependency>
+
+			<!-- corolla -->
+			<dependency>
+				<groupId>com.xujiajun</groupId>
+				<artifactId>corolla-core</artifactId>
+				<version>${corolla-core.version}</version>
+			</dependency>
+
+			<!-- xujiajun-core -->
+			<dependency>
+				<groupId>com.xujiajun</groupId>
+				<artifactId>xujiajun-core</artifactId>
+				<version>${xujiajun-core.version}</version>
+			</dependency>
+
+			<!-- RocketMQ -->
+			<dependency>
+				<groupId>org.apache.rocketmq</groupId>
+				<artifactId>rocketmq-client</artifactId>
+				<version>${rocketmq.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<!-- maven编译插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<!-- maven测试插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M5</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>2.3.2.RELEASE</version>
+				</plugin>
+				<!-- maven源码插件 配置该插件将源码放入仓库 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.2.1</version>
+					<configuration>
+						<attach>true</attach>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>compile</phase>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.3.1</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>
