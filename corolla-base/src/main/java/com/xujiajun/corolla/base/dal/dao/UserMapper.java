@@ -1,4 +1,4 @@
-package com.xujiajun.corolla.score.dal.dao;
+package com.xujiajun.corolla.base.dal.dao;
 
 import com.xujiajun.corolla.model.User;
 

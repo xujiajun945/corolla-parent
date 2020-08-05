@@ -83,6 +83,12 @@
             <groupId>com.xujiajun</groupId>
             <artifactId>corolla-core</artifactId>
         </dependency>
+
+        <!-- RocketMQ -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

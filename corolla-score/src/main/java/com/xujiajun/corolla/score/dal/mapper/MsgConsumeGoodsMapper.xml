@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xujiajun.corolla.score.dal.dao.MsgConsumeGoodsMapper">
+
+    <resultMap id="BaseResultMap" type="com.xujiajun.corolla.model.MsgConsumeGoods">
+        <id property="id" column="id"/>
+        <result property="orderMsgId" column="order_msg_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        id, order_msg_id, create_time, update_time
+    </sql>
+
+    <select id="countByOrderMsgId" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            corolla_msg_consume_goods
+        WHERE
+            order_msg_id = #{orderMsgId}
+    </select>
+</mapper>

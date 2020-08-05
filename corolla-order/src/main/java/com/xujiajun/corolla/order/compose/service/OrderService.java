@@ -15,4 +15,13 @@ public interface OrderService {
      * @param goodsIdList 用户选择的商品id集合
      */
     void createOrder(Long userId, List<Long> goodsIdList);
+
+    /**
+     * 创建订单 mq方式
+     *
+     * @param orderMsgId 订单消息id
+     * @param userId 用户id
+     * @param goodsIdList 用户选择的商品id集合
+     */
+    void createOrderMq(Long orderMsgId, Long userId, List<Long> goodsIdList);
 }

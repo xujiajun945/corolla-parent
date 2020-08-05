@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xujiajun.corolla.base.dal.dao.OrderMsgMapper">
+
+    <resultMap id="BaseResultMap" type="com.xujiajun.corolla.model.OrderMsg">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="orderReturn" column="order_return"/>
+        <result property="goodsReturn" column="goods_return"/>
+        <result property="deleted" column="is_delete"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="BaseColumnList">
+        id, content, is_delete, create_time, update_time
+    </sql>
+
+    <insert id="insert" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        INSERT INTO
+            corolla_order_msg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="content != null">
+                content,
+            </if>
+            <if test="orderReturn != null">
+                order_return,
+            </if>
+            <if test="goodsReturn != null">
+                goods_return,
+            </if>
+            <if test="deleted != null">
+                is_delete,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="orderReturn != null">
+                #{orderReturn},
+            </if>
+            <if test="goodsReturn != null">
+                #{goodsReturn},
+            </if>
+            <if test="deleted != null">
+                #{deleted},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="removeById">
+        UPDATE
+            corolla_order_msg
+        SET
+            is_delete = TRUE
+        WHERE
+            id = #{id}
+    </update>
+
+    <update id="updateById">
+        UPDATE
+            corolla_order_msg
+        SET
+            <trim suffixOverrides=",">
+                <if test="content != null">
+                    content = #{content},
+                </if>
+                <if test="orderReturn != null">
+                    order_return = #{orderReturn},
+                </if>
+                <if test="goodsReturn != null">
+                    goods_return = #{goodsReturn},
+                </if>
+                <if test="deleted != null">
+                    is_delete = #{deleted},
+                </if>
+                <if test="createTime != null">
+                    create_time = #{createTime},
+                </if>
+                <if test="updateTime != null">
+                    update_time = #{updateTime}
+                </if>
+            </trim>
+        WHERE
+            id = #{id}
+    </update>
+
+    <select id="listAllEnabled" resultMap="BaseResultMap">
+        SELECT
+            <include refid="BaseColumnList"/>
+        FROM
+            corolla_order_msg
+        WHERE
+            is_delete = FALSE
+            AND order_return = 0
+            AND goods_return = 0
+    </select>
+</mapper>

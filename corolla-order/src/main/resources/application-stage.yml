@@ -23,3 +23,8 @@ corolla:
     url: jdbc:mysql://192.168.18.128:3306/corolla?useAffectedRows=true&autoReconnect=true&useUnicode=true&useSSL=false&characterEncoding=utf-8
     username: root
     password: root
+  rocket-mq:
+    namesrv: 192.168.18.128:9876
+    group: group1
+    topic: TopicTest
+    tags: TagTest
