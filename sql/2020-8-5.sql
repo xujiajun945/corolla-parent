@@ -23,6 +23,15 @@ CREATE TABLE corolla_order_msg_consume (
 	update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
 	PRIMARY KEY (id),
 	UNIQUE KEY (order_msg_id)
-) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT '订单消息消费表';
+) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT '订单消息消费表-order';
+
+CREATE TABLE corolla_msg_consume_goods (
+	id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	order_msg_id BIGINT(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单消息表id',
+	create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+	PRIMARY KEY (id),
+	UNIQUE KEY (order_msg_id)
+) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT '订单消息消费表-goods';
 
 ALTER TABLE corolla_order_msg_consume RENAME TO corolla_msg_consume_order;
