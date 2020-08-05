@@ -70,11 +70,16 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void createOrderMq(Long orderMsgId, Long userId, List<Long> goodsIdList) {
-        this.createOrder(userId, goodsIdList);
         // 创建订单成功, 发送消息通知base服务
         Map<String, Object> data = new HashMap<>(2);
         data.put("status", 1);
         data.put("orderMsgId", orderMsgId);
+        try {
+            this.createOrder(userId, goodsIdList);
+        } catch (Exception e) {
+            log.error("业务异常, 触发回滚通知", e);
+            data.put("status", 2);
+        }
         Message message = new Message(properties.getTopic(), "OrderReturn", JacksonUtils.toJson(data).getBytes());
         try {
             producer.send(message);
