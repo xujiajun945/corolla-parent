@@ -5,17 +5,52 @@
     <resultMap id="BaseResultMap" type="com.xujiajun.corolla.model.MsgConsumeOrder">
         <id property="id" column="id"/>
         <result property="orderMsgId" column="order_msg_id"/>
+        <result property="status" column="status"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <sql id="BaseColumnList">
-        id, order_msg_id, create_time, update_time
+        id, order_msg_id, status, create_time, update_time
     </sql>
 
-    <select id="countOrderMsgId" resultType="java.lang.Integer">
+    <insert id="insert" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        INSERT INTO
+        corolla_msg_consume_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderMsgId != null">
+                order_msg_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderMsgId != null">
+                #{orderMsgId},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getByOrderMsgId" resultMap="BaseResultMap">
         SELECT
-            COUNT(*)
+            <include refid="BaseColumnList"/>
         FROM
             corolla_msg_consume_order
         WHERE

@@ -17,4 +17,11 @@ public interface OrderGoodsMapper {
 	 * @param orderGoodsList 订单-商品信息列表
 	 */
 	void batchInsert(@Param("orderGoodsList") List<OrderGoods> orderGoodsList);
+
+	/**
+	 * 根据订单id移除
+	 *
+	 * @param orderId 订单id
+	 */
+	void removeByOrderId(Long orderId);
 }

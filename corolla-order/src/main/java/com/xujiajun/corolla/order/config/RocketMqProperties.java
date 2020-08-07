@@ -17,11 +17,24 @@ import org.springframework.stereotype.Component;
 @ToString
 public class RocketMqProperties {
 
+	/**
+	 * namesrv地址
+	 */
 	private String namesrv;
 
-	private String group;
+	/**
+	 * mq消费者使用的组
+	 */
+	private String consumerGroup;
 
+	/**
+	 * mq生产者使用的组
+	 */
+	private String producerGroup;
+
+	/**
+	 * mq使用的topic
+	 */
 	private String topic;
 
-	private String tags;
 }

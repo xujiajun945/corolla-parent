@@ -3,6 +3,7 @@ package com.xujiajun.corolla.score.handler;
 import com.xujiajun.core.constant.BaseResponseCode;
 import com.xujiajun.core.entity.ResponseData;
 import com.xujiajun.core.exception.ResponseException;
+import com.xujiajun.corolla.exception.CorollaException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
@@ -91,6 +92,16 @@ public class ControllerAdvice {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(ResponseException.class)
 	public ResponseData handleResponseException(ResponseException e) {
+		log.error(BaseResponseCode.BAD_REQUEST.getMessage(), e);
+		return new ResponseData(e.getCode(), e.getMessage());
+	}
+
+	/**
+	 * 业务自定义异常
+	 */
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(CorollaException.class)
+	public ResponseData handleCorollaException(CorollaException e) {
 		log.error(BaseResponseCode.BAD_REQUEST.getMessage(), e);
 		return new ResponseData(e.getCode(), e.getMessage());
 	}

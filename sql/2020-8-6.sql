@@ -1,0 +1,1 @@
+DROP TABLE corolla_order_msg_his;

@@ -8,10 +8,11 @@
         <result property="deleted" column="is_delete"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
+        <result property="orderMsgId" column="order_msg_id"/>
     </resultMap>
 
     <sql id="BaseColumnList">
-        id, user_id, is_delete, create_time, update_time
+        id, user_id, is_delete, create_time, update_time, order_msg_id
     </sql>
 
     <insert id="insert" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
@@ -28,7 +29,10 @@
                 create_time,
             </if>
             <if test="updateTime != null">
-                update_time
+                update_time,
+            </if>
+            <if test="orderMsgId != null">
+                order_msg_id,
             </if>
         </trim>
         VALUES
@@ -43,8 +47,29 @@
                 #{createTime},
             </if>
             <if test="updateTime != null">
-                #{updateTime}
+                #{updateTime},
+            </if>
+            <if test="orderMsgId != null">
+                #{orderMsgId},
             </if>
         </trim>
     </insert>
+
+    <update id="removeByOrderMsgId">
+        UPDATE
+            corolla_order
+        SET
+            is_delete = TRUE
+        WHERE
+            order_msg_id = #{orderMsgId}
+    </update>
+
+    <select id="getByOrderMsgId" resultMap="BaseResultMap">
+        SELECT
+            <include refid="BaseColumnList"/>
+        FROM
+            corolla_order
+        WHERE
+            order_msg_id = #{orderMsgId}
+    </select>
 </mapper>

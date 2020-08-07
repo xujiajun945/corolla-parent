@@ -5,9 +5,13 @@ import com.xujiajun.corolla.base.compose.service.BusinessService;
 import com.xujiajun.corolla.base.dal.dao.OrderMsgMapper;
 import com.xujiajun.corolla.base.feign.GoodsClient;
 import com.xujiajun.corolla.base.feign.OrderClient;
+import com.xujiajun.corolla.constant.MessageStatusEnum;
+import com.xujiajun.corolla.constant.MqTagEnum;
 import com.xujiajun.corolla.message.OrderMessage;
+import com.xujiajun.corolla.message.RollbackMessage;
 import com.xujiajun.corolla.model.OrderMsg;
 import com.xujiajun.corolla.util.JacksonUtils;
+import com.xujiajun.corolla.util.MqProducerClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +37,9 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Autowired
     private OrderMsgMapper orderMsgMapper;
+
+    @Autowired
+    private MqProducerClient producerClient;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -69,4 +76,28 @@ public class BusinessServiceImpl implements BusinessService {
         orderMsg.setContent(JacksonUtils.toJson(orderMessage));
         orderMsgMapper.updateById(orderMsg);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+	@Override
+	public void updateOrderMsgStatus(String tags, Long orderMsgId, Integer status) {
+        OrderMsg updater = new OrderMsg();
+        updater.setId(orderMsgId);
+        if (MqTagEnum.ORDER_RETURN.getTag().equals(tags)) {
+            updater.setOrderReturn(status);
+        }
+        if (MqTagEnum.GOODS_RETURN.getTag().equals(tags)) {
+            updater.setGoodsReturn(status);
+        }
+        orderMsgMapper.updateById(updater);
+        if (MessageStatusEnum.FAILED.getStatus().equals(status)) {
+            OrderMsg ori = orderMsgMapper.getById(orderMsgId);
+            OrderMessage orderMessage = JacksonUtils.parseObject(ori.getContent(), OrderMessage.class);
+            // 查询用户的订单
+            userManager.unModifyUserAccountAndScore(orderMessage.getUserId(), orderMessage.getGoodsIdList());
+            // 通知回滚
+            RollbackMessage rollbackMessage = new RollbackMessage();
+            rollbackMessage.setOrderMsgId(orderMsgId);
+            producerClient.send(MqTagEnum.ROLLBACK.getTag(), JacksonUtils.toJson(rollbackMessage));
+        }
+	}
 }

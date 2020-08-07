@@ -14,4 +14,19 @@ public interface OrderMapper {
      * @param order 订单信息
      */
     void insert(Order order);
+
+	/**
+	 * 根据订单消息移除
+	 *
+	 * @param orderMsgId 订单消息id
+	 */
+	void removeByOrderMsgId(Long orderMsgId);
+
+	/**
+	 * 根据订单消息id查询
+	 *
+	 * @param orderMsgId 订单消息id
+	 * @return 订单信息
+	 */
+	Order getByOrderMsgId(Long orderMsgId);
 }

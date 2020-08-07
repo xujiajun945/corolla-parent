@@ -23,4 +23,13 @@ public interface BusinessService {
 	 * @param goodsIdList 用户选择的商品id集合
 	 */
 	void userPostOrderMq(Long userId, List<Long> goodsIdList);
+
+	/**
+	 * 更新消息消费的状态
+	 *
+	 * @param tags 当前消息的tags
+	 * @param orderMsgId 订单消息id
+	 * @param status 消息状态
+	 */
+	void updateOrderMsgStatus(String tags, Long orderMsgId, Integer status);
 }

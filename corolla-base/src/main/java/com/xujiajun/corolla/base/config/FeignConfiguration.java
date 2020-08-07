@@ -1,5 +1,7 @@
 package com.xujiajun.corolla.base.config;
 
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.xujiajun.core.entity.ResponseData;
 import com.xujiajun.core.exception.ResponseException;
 import com.xujiajun.corolla.util.JacksonUtils;
@@ -40,7 +42,7 @@ public class FeignConfiguration {
         return new UserErrorDecoder();
     }
 
-//    @Bean
+    @Bean
     public Decoder decoder() {
         return new ClassicDecoder();
     }
@@ -57,7 +59,9 @@ public class FeignConfiguration {
         public Object decode(Response response, Type type) throws IOException, FeignException {
             // 获取原始的返回内容
             String json = Util.toString(response.body().asReader(StandardCharsets.UTF_8));
-            return JacksonUtils.parseObject(json, type.getClass());
+            ResponseData responseData = JacksonUtils.parseObject(json, ResponseData.class);
+            Object o = JSON.parseObject(JSON.toJSONString(responseData.getData()), type);
+            return o;
         }
 
     }

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!--
+	scan：当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+	scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒当scan为true时，此属性生效。默认的时间间隔为1分钟。
+	debug：当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
+-->
 <configuration scan="true" scanPeriod="10 seconds">
 
 	<!-- 定义日志文件名称 -->
@@ -7,6 +12,7 @@
 	<!-- 定义日志的根目录 -->
 	<property name="LOG_HOME" value="./logs" />
 	<!-- 定义日志的输出格式 -->
+	<!-- 日志输出格式：%d表示日期时间，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %logger{50} 表示logger名字最长50个字符，否则按照句点分割。 %msg：日志消息，%n是换行符 -->
 	<property name="LOG_PATTERN" value="%cyan(%d{yyyy-MM-dd HH:mm:ss.SSS}) %boldYellow(%-5p) [%thread] %blue(%c{1}) - %msg%n"/>
 	<!-- dal输出格式 -->
 	<property name="DAL_LOG_PATTERN" value="%cyan(%d{yyyy-MM-dd HH:mm:ss.SSS}) %boldYellow(%-5p) [%thread] %blue(%c{1}) - %yellow(%msg%n)"/>
@@ -89,6 +95,17 @@
 		</encoder>
 	</appender>
 
+<!--	<appender name="rocketmq" class="org.apache.rocketmq.logappender.logback.RocketmqLogbackAppender">-->
+<!--		<tag>*</tag>-->
+<!--		<topic>topic-log</topic>-->
+<!--		<producerGroup>group-log</producerGroup>-->
+<!--		<nameServerAddress>192.168.18.128:9876</nameServerAddress>-->
+<!--		<layout>-->
+<!--			<pattern>%date %p %t - %m%n</pattern>-->
+<!--		</layout>-->
+<!--	</appender>-->
+
+
 	<!-- 异步日志配置 -->
 	<appender name="info_async" class="ch.qos.logback.classic.AsyncAppender">
 		<discardingThreshold>20</discardingThreshold>
@@ -105,17 +122,33 @@
 		<queueSize>2000</queueSize>
 		<appender-ref ref="dal"/>
 	</appender>
+<!--	<appender name="rocketmq_async" class="ch.qos.logback.classic.AsyncAppender">-->
+<!--		<discardingThreshold>20</discardingThreshold>-->
+<!--		<queueSize>2000</queueSize>-->
+<!--		<maxFlushTime>2000</maxFlushTime>-->
+<!--		<neverBlock>true</neverBlock>-->
+<!--		<appender-ref ref="rocketmq"/>-->
+<!--	</appender>-->
 
-	<!-- Spring framework logger -->
+	<!--
+		logger主要用于存放日志对象，也可以定义日志类型、级别
+		name：表示匹配的logger类型前缀，也就是包的前半部分
+		level：要记录的日志级别，包括 TRACE < DEBUG < INFO < WARN < ERROR
+		additivity：作用在于children-logger是否使用 rootLogger配置的appender进行输出，
+		false：表示只用当前logger的appender-ref，true：
+		表示当前logger的appender-ref和rootLogger的appender-ref都有效
+	-->
 	<logger name="org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener" level="ERROR"/>
 <!--	<logger name="org.springframework.data.redis.core.RedisConnectionUtils" level="INFO"/>-->
 	<logger name="org.springframework.session.web.http.SessionRepositoryFilter.SESSION_LOGGER" level="ERROR"/>
-<!--	<logger name="com.netflix.loadbalancer" level="ERROR"/>-->
+	<logger name="com.netflix.loadbalancer" level="ERROR"/>
 <!--	<logger name="org.springframework.session.data.redis.RedisSessionExpirationPolicy" level="ERROR"/>-->
 <!--	<logger name="io.lettuce.core" level="ERROR"/>-->
 	<logger name="org.apache.http" level="ERROR"/>
 	<logger name="org.springframework.jndi" level="ERROR"/>
 	<logger name="org.springframework.beans.factory.support.DefaultListableBeanFactory" level="INFO"/>
+	<logger name="org.springframework.boot.context.logging" level="INFO"/>
+	<logger name="org.springframework.cloud.context.scope" level="INFO"/>
 
 	<springProfile name="dev">
 		<logger name="com.xujiajun.corolla" additivity="false">
@@ -132,10 +165,15 @@
 			<appender-ref ref="error_async"/>
 		</logger>
 
+		<!--
+			root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，
+			要么是定义的logger，要么是root，判断的关键在于找到这个logger，然后判断这个logger的appender和level。
+		-->
 		<root level="DEBUG">
 			<appender-ref ref="stdout"/>
 			<appender-ref ref="info_async"/>
 			<appender-ref ref="error_async"/>
+<!--			<appender-ref ref="rocketmq_async"/>-->
 		</root>
 	</springProfile>
 

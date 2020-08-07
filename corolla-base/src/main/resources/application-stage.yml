@@ -25,6 +25,6 @@ corolla:
     password: root
   rocket-mq:
     namesrv: 192.168.18.128:9876
-    group: group1
+    consumer-group: consumer-group-1
+    producer-group: producer-group-1
     topic: TopicTest
-    tags: TagTest

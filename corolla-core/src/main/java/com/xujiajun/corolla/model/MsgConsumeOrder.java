@@ -22,6 +22,8 @@ public class MsgConsumeOrder implements Serializable {
 
 	private Long orderMsgId;
 
+	private Integer status;
+
 	private Date createTime;
 
 	private Date updateTime;

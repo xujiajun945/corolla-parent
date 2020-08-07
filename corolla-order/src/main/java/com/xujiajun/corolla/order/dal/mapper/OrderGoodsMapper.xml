@@ -36,4 +36,13 @@
             </trim>
         </foreach>
     </insert>
+
+    <update id="removeByOrderId">
+        UPDATE
+            corolla_order_goods
+        SET
+            is_delete = TRUE
+        WHERE
+            order_id = #{orderId}
+    </update>
 </mapper>

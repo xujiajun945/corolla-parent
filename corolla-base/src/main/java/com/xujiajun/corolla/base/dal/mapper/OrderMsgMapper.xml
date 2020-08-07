@@ -13,8 +13,17 @@
     </resultMap>
 
     <sql id="BaseColumnList">
-        id, content, is_delete, create_time, update_time
+        id, content, order_return, goods_return, is_delete, create_time, update_time
     </sql>
+
+    <select id="getById" resultMap="BaseResultMap">
+        SELECT
+            <include refid="BaseColumnList"/>
+        FROM
+            corolla_order_msg
+        WHERE
+            id = #{id}
+    </select>
 
     <insert id="insert" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
         INSERT INTO
@@ -105,8 +114,7 @@
         FROM
             corolla_order_msg
         WHERE
-            is_delete = FALSE
-            AND order_return = 0
+            order_return = 0
             AND goods_return = 0
     </select>
 </mapper>

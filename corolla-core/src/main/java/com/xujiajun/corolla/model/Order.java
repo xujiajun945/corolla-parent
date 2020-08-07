@@ -39,4 +39,9 @@ public class Order implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+    /**
+     * 订单消息id
+     */
+    private Long orderMsgId;
 }

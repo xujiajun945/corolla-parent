@@ -12,6 +12,14 @@ import java.util.List;
 public interface OrderMsgMapper {
 
 	/**
+	 * 根据id查询
+	 *
+	 * @param id id
+	 * @return 订单消息
+	 */
+	OrderMsg getById(Long id);
+
+	/**
 	 * 添加
 	 *
 	 * @param orderMsg 订单消息
